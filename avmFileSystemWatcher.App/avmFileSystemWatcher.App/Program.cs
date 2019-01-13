@@ -12,26 +12,40 @@ namespace avmFileSystemWatcher.App
 	{
 		static void Main(string[] args)
 		{
-			avmFileSystemWatcherProcess avmSync = null;
-			if (args.Count() > 1)
+			try
 			{
-				if (args[1] == null || args[2] == null)
+				avmFileSystemWatcherProcess avmSync = null;
+				if (args.Count() > 1)
 				{
-					avmSync = new avmFileSystemWatcherProcess();
+					if (args[1] == null || args[2] == null)
+					{
+						avmSync = new avmFileSystemWatcherProcess();
+					}
+					else
+					{
+						if (args[3] != null)
+						{
+							avmSync = new avmFileSystemWatcherProcess(args[1], args[2], Convert.ToInt32(args[3]));
+						}
+						else
+						{
+							avmSync = new avmFileSystemWatcherProcess(args[1], args[2]);
+						}
+					}
 				}
 				else
 				{
-					avmSync = new avmFileSystemWatcherProcess(args[1], args[2]);
-				}				
-			}
-			else
-			{
-				avmSync = new avmFileSystemWatcherProcess();
-			}
+					avmSync = new avmFileSystemWatcherProcess();
+				}
 
-			while (avmSync != null && true)
+				while (avmSync != null && true)
+				{
+					avmSync.Init();
+				}
+			}
+			catch (Exception ex)
 			{
-				avmSync.Init();				
+				throw new Exception(string.Format("Puff! \rMESSAGE = {0} | INNER = {1} | STACK = {2} | SOURCE = {3}\rPLEASE, CREATE A ISSUE INTO THIS PROJECT.\r", ex.Message, ex.InnerException, ex.StackTrace, ex.Source));
 			}
 	   }
 	}

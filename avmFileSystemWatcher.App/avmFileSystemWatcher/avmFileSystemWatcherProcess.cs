@@ -15,12 +15,14 @@ namespace avmFileSystemWatcher
 	public class avmFileSystemWatcherProcess : IDisposable
 	{
 		private string Out = string.Empty;
+		private const int _timeoutDefault = 30000;
 
 		public string Log { get { return Out; } }
 
 		FileSystemWatcher fsw = null;
 		string sourcePath = string.Empty;
 		string destinationPath = string.Empty;
+		int timeout = _timeoutDefault;
 		bool running = false;
 
 		public avmFileSystemWatcherProcess()
@@ -28,9 +30,14 @@ namespace avmFileSystemWatcher
 			loadConfig();
 		}
 
-		public avmFileSystemWatcherProcess(string source = "", string destination = "")
+		public avmFileSystemWatcherProcess(string source = "", string destination = "", int _timeout = _timeoutDefault)
 		{
 			loadConfig(source, destination);
+
+			if (timeout != _timeoutDefault)
+			{
+				this.timeout = _timeout;
+			}
 		}
 
 		public bool Init()
@@ -77,6 +84,14 @@ namespace avmFileSystemWatcher
 			{
 				this.sourcePath = ConfigurationManager.AppSettings["SOURCE"];
 				this.destinationPath = ConfigurationManager.AppSettings["DESTINATION"];
+				try
+				{
+					this.timeout = Convert.ToInt32(ConfigurationManager.AppSettings["TIMEOUT"]);
+				}
+				catch
+				{
+					this.timeout = _timeoutDefault;
+				}
 			}
 		}
 		private void Load()
@@ -125,7 +140,7 @@ namespace avmFileSystemWatcher
 				running = true;
 
 				// WAIT TIMEOUT
-				WaitForChangedResult wcr = fsw.WaitForChanged(WatcherChangeTypes.All, 30000);
+				WaitForChangedResult wcr = fsw.WaitForChanged(WatcherChangeTypes.All, this.timeout);
 
 				// TIMEOUT
 				if (wcr.TimedOut)
