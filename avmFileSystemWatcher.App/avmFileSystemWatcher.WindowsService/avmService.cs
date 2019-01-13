@@ -25,8 +25,8 @@ namespace avmFileSystemWatcher.WindowsService
 			while (true)
 			{
 				avmSync.Init();
+				Logger.Log(avmSync.Log);
 			}
-
 		}
 
 		protected override void OnStop()

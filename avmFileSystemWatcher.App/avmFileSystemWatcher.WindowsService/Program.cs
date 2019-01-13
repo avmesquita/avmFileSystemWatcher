@@ -23,6 +23,7 @@ namespace avmFileSystemWatcher.WindowsService
 				while (init)
 				{
 					init = avmSync.Init();
+					Logger.Log(avmSync.Log);
 				}
 			}
 			else

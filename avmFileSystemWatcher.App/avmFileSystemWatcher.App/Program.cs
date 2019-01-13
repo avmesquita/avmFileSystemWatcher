@@ -49,7 +49,8 @@ namespace avmFileSystemWatcher.App
 				while (avmSync != null && true)
 				{
 					avmSync.Init();
-				}
+					Logger.Log(avmSync.Log);
+				}				
 
 				avmSync.Dispose();
 			}
