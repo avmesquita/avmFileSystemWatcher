@@ -10,7 +10,7 @@ namespace avmFileSystemWatcher.App
 {
 	class Program
 	{
-		static void Main(string[] args)
+		static int Main(string[] args)
 		{
 			avmFileSystemWatcherProcess avmSync = null;
 			try
@@ -31,6 +31,14 @@ namespace avmFileSystemWatcher.App
 						{
 							avmSync = new avmFileSystemWatcherProcess(args[1], args[2]);
 						}
+					}
+					if (avmSync == null)
+					{
+						Console.WriteLine("Usage:");
+						Console.WriteLine("avmFileSystemWatcher.App source destination [timeout]");
+						Console.WriteLine(" ");
+						Console.WriteLine(" or using a avmFileSystemWatcher.config file.");
+						return 1;
 					}
 				}
 				else
@@ -54,6 +62,7 @@ namespace avmFileSystemWatcher.App
 				}
 				throw new Exception(string.Format("Puff! \rMESSAGE = {0} | INNER = {1} | STACK = {2} | SOURCE = {3}\rPLEASE, CREATE A ISSUE INTO THIS PROJECT.\r", ex.Message, ex.InnerException, ex.StackTrace, ex.Source));
 			}
+			return 0;
 	   }
 	}
 }
