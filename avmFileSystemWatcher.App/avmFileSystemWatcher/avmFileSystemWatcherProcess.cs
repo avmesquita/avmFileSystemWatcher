@@ -23,7 +23,11 @@ namespace avmFileSystemWatcher
 		string sourcePath = string.Empty;
 		string destinationPath = string.Empty;
 		int timeout = _timeoutDefault;
-		bool running = false;
+
+		// thinking about this... to use with unique event of class... maybe future...
+		public bool running = false;
+
+		public bool _stopCommand = false;
 
 		public avmFileSystemWatcherProcess()
 		{
@@ -147,6 +151,7 @@ namespace avmFileSystemWatcher
 				{
 					Out += "WAITING FOR 30 SECONDS..." + Environment.NewLine;
 					Console.WriteLine("WAITING FOR 30 SECONDS");
+					validateForceStop();
 				}
 				else
 				{
@@ -169,6 +174,8 @@ namespace avmFileSystemWatcher
 			Console.WriteLine(msg);
 
 			Out +=  msg + Environment.NewLine;
+
+			validateForceStop();
 		}
 
 		private void fsw_Created(object sender, FileSystemEventArgs e)
@@ -221,6 +228,7 @@ namespace avmFileSystemWatcher
 				Console.WriteLine(Environment.NewLine);
 				Console.WriteLine(ex?.InnerException?.Message);
 			}
+			validateForceStop();
 		}
 
 		private void fsw_Deleted(object sender, FileSystemEventArgs e)
@@ -230,6 +238,8 @@ namespace avmFileSystemWatcher
 			Console.WriteLine(msg);
 
 			Out += msg + Environment.NewLine;
+
+			validateForceStop();
 		}
 
 		private void fsw_Renamed(object sender, RenamedEventArgs e)
@@ -239,6 +249,17 @@ namespace avmFileSystemWatcher
 			Console.WriteLine(msg);
 
 			Out += msg;
+
+			validateForceStop();
+		}
+
+		private void validateForceStop()
+		{
+			if (this._stopCommand)
+			{
+				_stopCommand = false;
+				Environment.Exit(2);
+			}
 		}
 
 		public void Dispose()
