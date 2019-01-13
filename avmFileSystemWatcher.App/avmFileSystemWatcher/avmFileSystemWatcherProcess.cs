@@ -128,13 +128,13 @@ namespace avmFileSystemWatcher
 				// TIMEOUT
 				if (wcr.TimedOut)
 				{
-					Out = "FINALLY WAITING FOR 30 SECONDS...";
-					Console.WriteLine("FINALLY WAITING FOR 30 SECONDS");
+					Out += "WAITING FOR 30 SECONDS..." + Environment.NewLine;
+					Console.WriteLine("WAITING FOR 30 SECONDS");
 				}
 				else
 				{
-					Out = string.Format("EVENT: {0} {1}", wcr.Name, wcr.ChangeType.ToString());
-					Console.WriteLine(string.Format("EVENT: {0} {1}", wcr.Name, wcr.ChangeType.ToString()));
+					Out += string.Format("EVENT: NAME {0} TYPE {1}", wcr.Name, wcr.ChangeType.ToString()) + Environment.NewLine;
+					Console.WriteLine(string.Format("EVENT: NAME {0} TYPE {1}", wcr.Name, wcr.ChangeType.ToString()));
 				}
 			}
 			catch (Exception ex)
@@ -145,12 +145,11 @@ namespace avmFileSystemWatcher
 
 		private void fsw_Changed(object sender, FileSystemEventArgs e)
 		{
-			Console.WriteLine(String.Format("UPDATED: {0} {1}", e.FullPath, Environment.NewLine));
-			Console.WriteLine(String.Format("NAME: {0} {1}", e.Name, Environment.NewLine));
-			Console.WriteLine(String.Format("EVENT: {0} {1}", e.ChangeType, Environment.NewLine));
-			Console.WriteLine(String.Format("----------------------- {0}", Environment.NewLine));
+			string msg = string.Format("UPDATED: FILE {0} | NAME {1} | EVENT {2}", e.FullPath, e.Name, e.ChangeType.ToString());
 
-			Out = string.Format("UPDATED: {0} | {1} | {2}", e.FullPath, e.Name, e.ChangeType.ToString());
+			Console.WriteLine(msg);
+
+			Out +=  msg + Environment.NewLine;
 		}
 
 		private void fsw_Created(object sender, FileSystemEventArgs e)
@@ -188,19 +187,14 @@ namespace avmFileSystemWatcher
 						throw new Exception("SOURCE PATH IS INVALID.");
 					}
 				}
+				string msg1 = string.Format("CREATED: {0} | {1} | {2}", e.FullPath, e.Name, e.ChangeType.ToString());
+				Out += msg1 + Environment.NewLine;
 
-				Console.WriteLine(String.Format("CREATED: {0} {1}", e.FullPath, Environment.NewLine));
-				Console.WriteLine(String.Format("NAME: {0} {1}", e.Name, Environment.NewLine));
-				Console.WriteLine(String.Format("EVENT: {0} {1}", e.ChangeType, Environment.NewLine));
-				Console.WriteLine(String.Format("----------------------- {0}", Environment.NewLine));
-				File.Copy(e.FullPath, destinationPath + e.Name, true);
-				File.Delete(sourcePath + e.Name);
+				string msg2 = string.Format("COPIED: {0} | {1}", e.FullPath, destinationPath + e.Name);
+				Out +=  msg1 + Environment.NewLine;
 
-				Console.WriteLine(String.Format("COPIED FROM {0} TO {1} {2}", e.FullPath, destinationPath + e.Name, Environment.NewLine));
-				Console.WriteLine(String.Format("----------------------- {0}", Environment.NewLine));
-
-				Out = string.Format("CREATED: {0} | {1} | {2}", e.FullPath, e.Name, e.ChangeType.ToString());
-				Out = string.Format("COPIED: {0} | {1}", e.FullPath, destinationPath + e.Name);
+				Console.WriteLine(msg1);
+				Console.WriteLine(msg2);
 			}
 			catch (Exception ex)
 			{
@@ -208,26 +202,24 @@ namespace avmFileSystemWatcher
 				Console.WriteLine(Environment.NewLine);
 				Console.WriteLine(ex?.InnerException?.Message);
 			}
-
 		}
 
 		private void fsw_Deleted(object sender, FileSystemEventArgs e)
 		{
-			Console.WriteLine(String.Format("DELETED: {0}, {1}", e.FullPath, Environment.NewLine));
-			Console.WriteLine(String.Format("NAME: {0} {1}", e.Name, Environment.NewLine));
-			Console.WriteLine(String.Format("EVENT: {0} {1}", e.ChangeType, Environment.NewLine));
-			Console.WriteLine(String.Format("----------------------- {0}", Environment.NewLine));
-			Out = string.Format("DELETED: {0} | {1} | {2}", e.FullPath, e.Name, e.ChangeType.ToString());
+			string msg = string.Format("DELETED: {0} | {1} | {2}", e.FullPath, e.Name, e.ChangeType.ToString());
 
+			Console.WriteLine(msg);
+
+			Out += msg + Environment.NewLine;
 		}
 
 		private void fsw_Renamed(object sender, RenamedEventArgs e)
 		{
-			Console.WriteLine(String.Format("NAME UPDATED: {0} {1}", e.FullPath, Environment.NewLine));
-			Console.WriteLine(String.Format("NAME: {0} {1}", e.Name, Environment.NewLine));
-			Console.WriteLine(String.Format("EVENT: {0} {1}", e.ChangeType, Environment.NewLine));
-			Console.WriteLine(String.Format("----------------------- {0}", Environment.NewLine));
-			Out = string.Format("NAME UPDATED: {0} | {1} | {2}", e.FullPath, e.Name, e.ChangeType.ToString());
+			string msg = string.Format("NAME UPDATED: {0} | {1} | {2}", e.FullPath, e.Name, e.ChangeType.ToString());
+
+			Console.WriteLine(msg);
+
+			Out += msg;
 		}
 
 		public void Dispose()
