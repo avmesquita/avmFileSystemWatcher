@@ -122,6 +122,8 @@ namespace avmFileSystemWatcher
 				// INCLUDE SUB-FOLDERS ?
 				this.fsw.IncludeSubdirectories = false;
 
+				running = true;
+
 				// WAIT TIMEOUT
 				WaitForChangedResult wcr = fsw.WaitForChanged(WatcherChangeTypes.All, 30000);
 
@@ -133,12 +135,14 @@ namespace avmFileSystemWatcher
 				}
 				else
 				{
-					Out += string.Format("EVENT: NAME {0} TYPE {1}", wcr.Name, wcr.ChangeType.ToString()) + Environment.NewLine;
-					Console.WriteLine(string.Format("EVENT: NAME {0} TYPE {1}", wcr.Name, wcr.ChangeType.ToString()));
+					string eventMessage = string.Format("EVENT: NAME {0} TYPE {1}", wcr.Name, wcr.ChangeType.ToString());
+					Out += eventMessage + Environment.NewLine;
+					Console.WriteLine(eventMessage);
 				}
 			}
 			catch (Exception ex)
 			{
+				running = false;
 				throw ex;
 			}
 		}
