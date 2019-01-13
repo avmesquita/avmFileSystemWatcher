@@ -8,7 +8,7 @@ FileSystemWatcher is a System.IO class used to monitor windows file systems.
 
 "C:\Windows\Microsoft.NET\Framework\v4.0.30319\installutil.exe" <path>\avmFileSystemWatcher.WindowsService.exe
   
-<strong>To Unistall:</strong>
+<strong>To Uninstall:</strong>
 
 "C:\Windows\Microsoft.NET\Framework\v4.0.30319\installutil.exe" -u <path>\avmFileSystemWatcher.WindowsService.exe
   
