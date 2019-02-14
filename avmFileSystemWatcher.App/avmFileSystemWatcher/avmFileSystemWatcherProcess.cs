@@ -21,6 +21,7 @@ namespace avmFileSystemWatcher
 
 		FileSystemWatcher fsw = null;
 		string sourcePath = string.Empty;
+		string sourceWildcard = string.Empty;
 		string destinationPath = string.Empty;
 		int timeout = _timeoutDefault;
 
@@ -61,7 +62,7 @@ namespace avmFileSystemWatcher
 
 				return true;
 			}
-			catch (Exception e)
+			catch //(Exception e)
 			{
 				return false;
 			}
@@ -76,17 +77,19 @@ namespace avmFileSystemWatcher
 			fsw = null;
 		}
 
-		private void loadConfig(string source = "", string destination = "")
+		private void loadConfig(string source = "", string destination = "", string wildcard = "*.*")
 		{
 			if (!string.IsNullOrEmpty(source) &&
 				!string.IsNullOrEmpty(destination))
 			{
 				this.sourcePath = source;
+				this.sourceWildcard = wildcard;
 				this.destinationPath = destination;
 			}
 			else
 			{
 				this.sourcePath = ConfigurationManager.AppSettings["SOURCE"];
+				this.sourceWildcard = ConfigurationManager.AppSettings["SOURCE-WILDCARD"];
 				this.destinationPath = ConfigurationManager.AppSettings["DESTINATION"];
 				try
 				{
@@ -123,7 +126,7 @@ namespace avmFileSystemWatcher
 				this.fsw.Path = sourcePath;
 
 				// TYPES
-				this.fsw.Filter = "*.*";
+				this.fsw.Filter = this.sourceWildcard;
 
 				// EVENTS TO NOTIFY
 				this.fsw.NotifyFilter = NotifyFilters.Attributes |
